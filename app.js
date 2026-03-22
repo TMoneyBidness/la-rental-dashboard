@@ -54,7 +54,7 @@ function renderListings(filteredListings = null) {
         <div class="listing-card" draggable="true" data-id="${listing.id}" data-rank="${rank}">
             <div class="rank-badge">#${rank}</div>
             <div class="drag-handle" title="Drag to reorder">⋮⋮</div>
-            <div class="listing-image" style="background-image: url('${listing.images[0] || ''}'); background-size: cover; background-position: center;">
+            <div class="listing-image" style="background-image: url('${listing.images[0] || ''}'); background-size: cover; background-position: center;" data-listing-id="${listing.id}">
                 <span class="listing-price">$${listing.price.toLocaleString()}/mo</span>
                 ${listing.source ? `<span class="listing-source">${listing.source}</span>` : ''}
             </div>
@@ -86,6 +86,7 @@ function renderListings(filteredListings = null) {
     setupDragAndDrop();
     setupNotes();
     setupExpandButtons();
+    setupImageClicks();
 }
 
 // Setup drag and drop
@@ -211,6 +212,18 @@ function showToast(message) {
     setTimeout(() => toast.classList.remove('show'), 2000);
 }
 
+// Setup card image clicks to open modal
+function setupImageClicks() {
+    document.querySelectorAll('.listing-image[data-listing-id]').forEach(img => {
+        img.addEventListener('click', (e) => {
+            if (e.target.closest('.drag-handle') || e.target.closest('.rank-badge')) return;
+            const id = parseInt(img.dataset.listingId);
+            const listing = listings.find(l => l.id === id);
+            if (listing) showModal(listing);
+        });
+    });
+}
+
 // Setup expand buttons
 function setupExpandButtons() {
     document.querySelectorAll('.expand-btn').forEach(btn => {
@@ -232,7 +245,9 @@ function showModal(listing) {
         <button class="modal-close" onclick="closeModal()">&times;</button>
         <div class="modal-gallery">
             ${listing.images.map((img, i) => `
-                <img src="${img}" alt="${listing.title} - Photo ${i+1}" class="modal-image" loading="lazy">
+                <img src="${img}" alt="${listing.title} - Photo ${i+1}" class="modal-image" loading="lazy"
+                     onclick="openLightbox(${JSON.stringify(listing.images).replace(/"/g, '&quot;')}, ${i})"
+                     title="Click to enlarge">
             `).join('')}
         </div>
         <h2>${listing.title}</h2>
@@ -359,5 +374,111 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeModal();
 });
 
+// Initialize map
+function initMap() {
+    const map = L.map('map').setView([34.1, -118.3], 11);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        maxZoom: 18,
+    }).addTo(map);
+
+    const colors = {
+        'FurnishedFinder': '#2563eb',
+        'SabbaticalHomes': '#10b981',
+        'Airbnb': '#ef4444'
+    };
+
+    window.listingsData.forEach(listing => {
+        if (!listing.lat || !listing.lng) return;
+        const color = colors[listing.source] || '#64748b';
+        const marker = L.circleMarker([listing.lat, listing.lng], {
+            radius: 10,
+            fillColor: color,
+            color: '#fff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.85,
+        }).addTo(map);
+
+        const pets = listing.petsAllowed ? '<span style="color:#16a34a">Pets OK</span>' : '<span style="color:#dc2626">No pets</span>';
+        const utils = listing.utilitiesIncluded ? 'Utils incl.' : 'Utils not incl.';
+        marker.bindPopup(`
+            <div style="min-width:200px;font-family:Inter,sans-serif;">
+                <img src="${listing.images[0]}" style="width:100%;height:100px;object-fit:cover;border-radius:6px;margin-bottom:6px;" />
+                <strong style="font-size:13px;">${listing.title}</strong><br>
+                <span style="color:#2563eb;font-weight:700;font-size:14px;">$${listing.price.toLocaleString()}/mo</span><br>
+                <span style="font-size:12px;color:#64748b;">${listing.neighborhood} &bull; ${listing.bedrooms}BR/${listing.bathrooms}BA</span><br>
+                <span style="font-size:11px;">${pets} &bull; ${utils}</span><br>
+                <a href="#" onclick="event.preventDefault();document.querySelector('.expand-btn[data-id=&quot;${listing.id}&quot;]').click();" style="font-size:12px;color:#2563eb;">View Details &rarr;</a>
+            </div>
+        `, { maxWidth: 250 });
+
+        marker.bindTooltip(`#${rankings[listing.id] || listing.id} $${listing.price.toLocaleString()}`, {
+            permanent: true,
+            direction: 'top',
+            offset: [0, -10],
+            className: 'map-price-label'
+        });
+    });
+}
+
+// Lightbox for modal gallery images
+function openLightbox(images, startIndex) {
+    let currentIndex = startIndex;
+
+    const overlay = document.createElement('div');
+    overlay.className = 'lightbox-overlay';
+    overlay.innerHTML = `
+        <button class="lightbox-close">&times;</button>
+        <button class="lightbox-prev">&lsaquo;</button>
+        <button class="lightbox-next">&rsaquo;</button>
+        <img class="lightbox-img" src="${images[currentIndex]}" />
+        <div class="lightbox-counter">${currentIndex + 1} / ${images.length}</div>
+    `;
+    document.body.appendChild(overlay);
+    document.body.style.overflow = 'hidden';
+
+    const img = overlay.querySelector('.lightbox-img');
+    const counter = overlay.querySelector('.lightbox-counter');
+
+    function update() {
+        img.src = images[currentIndex];
+        counter.textContent = `${currentIndex + 1} / ${images.length}`;
+    }
+
+    overlay.querySelector('.lightbox-close').onclick = () => {
+        overlay.remove();
+        document.body.style.overflow = '';
+    };
+    overlay.querySelector('.lightbox-prev').onclick = (e) => {
+        e.stopPropagation();
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        update();
+    };
+    overlay.querySelector('.lightbox-next').onclick = (e) => {
+        e.stopPropagation();
+        currentIndex = (currentIndex + 1) % images.length;
+        update();
+    };
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+            overlay.remove();
+            document.body.style.overflow = '';
+        }
+    });
+    document.addEventListener('keydown', function handler(e) {
+        if (!document.body.contains(overlay)) {
+            document.removeEventListener('keydown', handler);
+            return;
+        }
+        if (e.key === 'Escape') { overlay.remove(); document.body.style.overflow = ''; }
+        if (e.key === 'ArrowLeft') { currentIndex = (currentIndex - 1 + images.length) % images.length; update(); }
+        if (e.key === 'ArrowRight') { currentIndex = (currentIndex + 1) % images.length; update(); }
+    });
+}
+
 // Initialize on load
-document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('DOMContentLoaded', () => {
+    init();
+    initMap();
+});

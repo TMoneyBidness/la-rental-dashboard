@@ -21,6 +21,8 @@ window.listingsData = [
         availableFrom: "2026-03-01",
         source: "FurnishedFinder",
         url: "https://www.furnishedfinder.com/property/906956_1",
+        lat: 34.1122,
+        lng: -118.1908,
         images: [
             "images/listing_1_img_1.jpg",
             "images/listing_1_img_2.jpg",
@@ -51,6 +53,8 @@ window.listingsData = [
         availableFrom: "2026-03-31",
         source: "FurnishedFinder",
         url: "https://www.furnishedfinder.com/property/906052_1",
+        lat: 34.1145,
+        lng: -118.1935,
         images: [
             "images/listing_2_img_1.jpg",
             "images/listing_2_img_2.jpg",
@@ -80,6 +84,8 @@ window.listingsData = [
         availableFrom: "2026-05-31",
         source: "FurnishedFinder",
         url: "https://www.furnishedfinder.com/property/939383_1",
+        lat: 34.1142,
+        lng: -118.3369,
         images: [
             "images/listing_3_img_1.jpeg",
             "images/listing_3_img_2.jpeg",
@@ -110,6 +116,8 @@ window.listingsData = [
         availableFrom: "2026-03-01",
         source: "FurnishedFinder",
         url: "https://www.furnishedfinder.com/property/906446_1",
+        lat: 34.1396,
+        lng: -118.2147,
         images: [
             "images/listing_4_img_1.jpg",
             "images/listing_4_img_2.jpg",
@@ -140,6 +148,8 @@ window.listingsData = [
         availableFrom: "2026-04-13",
         source: "FurnishedFinder",
         url: "https://www.furnishedfinder.com/property/792221_1",
+        lat: 34.1789,
+        lng: -118.2378,
         images: [
             "images/listing_5_img_1.png",
             "images/listing_5_img_2.png",
@@ -169,6 +179,8 @@ window.listingsData = [
         availableFrom: "2026-03-01",
         source: "FurnishedFinder",
         url: "https://www.furnishedfinder.com/property/266234_1",
+        lat: 34.0370,
+        lng: -118.3440,
         images: [
             "images/listing_6_img_1.jpeg",
             "images/listing_6_img_2.jpeg",
@@ -199,6 +211,8 @@ window.listingsData = [
         availableFrom: "2026-05-31",
         source: "FurnishedFinder",
         url: "https://www.furnishedfinder.com/property/543881_1",
+        lat: 34.0294,
+        lng: -118.4421,
         images: [
             "images/listing_7_img_1.jpg",
             "images/listing_7_img_2.jpg",
@@ -229,6 +243,8 @@ window.listingsData = [
         availableFrom: "2026-03-01",
         source: "FurnishedFinder",
         url: "https://www.furnishedfinder.com/property/912653_1",
+        lat: 34.1828,
+        lng: -118.3234,
         images: [
             "images/listing_8_img_1.jpg",
             "images/listing_8_img_2.jpg",
@@ -259,6 +275,8 @@ window.listingsData = [
         availableFrom: "2026-04-19",
         source: "FurnishedFinder",
         url: "https://www.furnishedfinder.com/property/337012_1",
+        lat: 34.1870,
+        lng: -118.3813,
         images: [
             "images/listing_9_img_1.jpeg",
             "images/listing_9_img_2.jpeg",
@@ -289,6 +307,8 @@ window.listingsData = [
         minStay: "12 months",
         source: "SabbaticalHomes",
         url: "https://www.sabbaticalhomes.com/rental/165363",
+        lat: 34.1161,
+        lng: -118.1505,
         images: [
             "images/listing_10_img_1.jpg",
             "images/listing_10_img_2.jpeg",
@@ -320,6 +340,8 @@ window.listingsData = [
         minStay: "1 month",
         source: "SabbaticalHomes",
         url: "https://www.sabbaticalhomes.com/rental/176195",
+        lat: 34.0558,
+        lng: -118.4218,
         images: [
             "images/listing_11_img_1.jpg",
             "images/listing_11_img_2.jpg",
@@ -351,6 +373,8 @@ window.listingsData = [
         source: "Airbnb",
         url: "https://www.airbnb.com/rooms/14342080",
         rating: 4.84,
+        lat: 34.0627,
+        lng: -118.3553,
         images: [
             "images/listing_12_img_2.jpeg",
             "images/listing_12_img_3.jpg",
