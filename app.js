@@ -67,8 +67,8 @@ function renderListings(filteredListings = null) {
                     ${listing.sqft ? `<span>📐 ${listing.sqft} sqft</span>` : ''}
                 </div>
                 <div class="listing-tags">
-                    ${listing.petsAllowed ? '<span class="tag tag-pets">🐕 Pets OK</span>' : ''}
-                    ${listing.utilitiesIncluded ? '<span class="tag tag-utilities">⚡ Utils Incl</span>' : ''}
+                    ${listing.petsAllowed ? '<span class="tag tag-pets">🐕 Pets OK</span>' : '<span class="tag tag-no-pets">🚫 No Pets</span>'}
+                    ${listing.utilitiesIncluded ? '<span class="tag tag-utilities">⚡ Utils Incl</span>' : '<span class="tag tag-no-utils">⚡ Utils Not Incl</span>'}
                     ${listing.parking ? '<span class="tag tag-parking">🚗 Parking</span>' : ''}
                     ${listing.laundry ? '<span class="tag tag-laundry">🧺 Laundry</span>' : ''}
                 </div>

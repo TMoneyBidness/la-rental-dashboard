@@ -270,9 +270,19 @@ body {
     color: #166534;
 }
 
+.tag-no-pets {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
 .tag-utilities {
     background: #ede9fe;
     color: #5b21b6;
+}
+
+.tag-no-utils {
+    background: #fef3c7;
+    color: #92400e;
 }
 
 .tag-laundry {
