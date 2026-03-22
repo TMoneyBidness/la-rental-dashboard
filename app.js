@@ -73,9 +73,11 @@ function renderListings(filteredListings = null) {
                     ${listing.laundry ? '<span class="tag tag-laundry">🧺 Laundry</span>' : ''}
                 </div>
                 <div class="notes-section">
-                    <label class="notes-label">📝 Notes for Outreach:</label>
+                    <div class="notes-header">
+                        <label class="notes-label">📝 Notes for Outreach:</label>
+                        <button class="save-notes-btn" data-id="${listing.id}">💾 Save</button>
+                    </div>
                     <textarea class="notes-input" data-id="${listing.id}" placeholder="Add notes about this property...">${note}</textarea>
-                    <button class="save-notes-btn" data-id="${listing.id}">💾 Save</button>
                 </div>
                 <button class="expand-btn" data-id="${listing.id}">View Full Details →</button>
             </div>

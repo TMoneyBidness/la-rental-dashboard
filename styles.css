@@ -763,11 +763,16 @@ body {
     border-top: 1px solid #eee;
 }
 
+.notes-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
 .notes-label {
-    display: block;
     font-weight: 600;
     color: #333;
-    margin-bottom: 8px;
     font-size: 14px;
 }
 
