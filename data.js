@@ -413,5 +413,37 @@ window.listingsData = [
             "images/listing_13_img_4.jpg",
             "images/listing_13_img_5.jpg"
         ]
+    },
+    {
+        id: 14,
+        title: "Beautifully Renovated with Sunny Outdoor Patio and Garden",
+        location: "Los Angeles, CA",
+        neighborhood: "Mid-Wilshire",
+        price: 4100,
+        bedrooms: 2,
+        bathrooms: 1,
+        beds: ["Queen", "Twin"],
+        sqft: 1300,
+        laundry: "In-unit",
+        parking: "Free parking on premises (gated)",
+        petsAllowed: true,
+        petPolicy: "Well-behaved dogs welcome (must be friendly with resident cat)",
+        utilitiesIncluded: true,
+        utilities: "Utilities included",
+        amenities: ["WiFi", "Air Conditioning", "Heating", "Full Kitchen", "Dishwasher", "Microwave", "Smart TV", "Washer/Dryer", "Dedicated Workspace", "Free Gated Parking", "Private Garden/Patio", "Gas Grill", "Storage", "Hair Dryer"],
+        description: "Beautifully renovated, move-in-ready apartment on a peaceful tree-lined street in Mid-Wilshire. Original coved ceilings, hardwood floors, blackout curtains. Fully equipped gourmet kitchen with convection oven, air fryer, and well-stocked spice cupboard. Private sun-drenched garden with outdoor dining and gas grill. Minutes from The Grove, Beverly Hills, Hancock Park, Larchmont Village, LACMA, and La Brea Tar Pits.",
+        availability: "Available Now",
+        availableFrom: "2026-03-22",
+        source: "FurnishedFinder",
+        url: "https://www.furnishedfinder.com/property/925876_1",
+        lat: 34.0512,
+        lng: -118.3500,
+        images: [
+            "images/listing_14_img_1.jpg",
+            "images/listing_14_img_2.jpg",
+            "images/listing_14_img_3.jpg",
+            "images/listing_14_img_4.jpg",
+            "images/listing_14_img_5.jpg"
+        ]
     }
 ];
