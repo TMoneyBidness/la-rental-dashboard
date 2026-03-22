@@ -51,7 +51,12 @@ window.listingsData = [
         availableFrom: "2026-03-31",
         source: "FurnishedFinder",
         url: "https://www.furnishedfinder.com/property/906052_1",
-        images: []
+        images: [
+            "images/listing_2_img_1.jpg",
+            "images/listing_2_img_2.jpg",
+            "images/listing_2_img_3.jpg",
+            "images/listing_2_img_4.jpg"
+        ]
     },
     {
         id: 3,
@@ -75,7 +80,13 @@ window.listingsData = [
         availableFrom: "2026-05-31",
         source: "FurnishedFinder",
         url: "https://www.furnishedfinder.com/property/939383_1",
-        images: []
+        images: [
+            "images/listing_3_img_1.jpeg",
+            "images/listing_3_img_2.jpeg",
+            "images/listing_3_img_3.jpeg",
+            "images/listing_3_img_4.jpeg",
+            "images/listing_3_img_5.jpeg"
+        ]
     },
     {
         id: 4,
@@ -99,7 +110,13 @@ window.listingsData = [
         availableFrom: "2026-03-01",
         source: "FurnishedFinder",
         url: "https://www.furnishedfinder.com/property/906446_1",
-        images: []
+        images: [
+            "images/listing_4_img_1.jpg",
+            "images/listing_4_img_2.jpg",
+            "images/listing_4_img_3.jpg",
+            "images/listing_4_img_4.jpg",
+            "images/listing_4_img_5.jpg"
+        ]
     },
     {
         id: 5,
@@ -123,7 +140,12 @@ window.listingsData = [
         availableFrom: "2026-04-13",
         source: "FurnishedFinder",
         url: "https://www.furnishedfinder.com/property/792221_1",
-        images: []
+        images: [
+            "images/listing_5_img_1.png",
+            "images/listing_5_img_2.png",
+            "images/listing_5_img_3.png",
+            "images/listing_5_img_4.png"
+        ]
     },
     {
         id: 6,
@@ -147,7 +169,13 @@ window.listingsData = [
         availableFrom: "2026-03-01",
         source: "FurnishedFinder",
         url: "https://www.furnishedfinder.com/property/266234_1",
-        images: []
+        images: [
+            "images/listing_6_img_1.jpeg",
+            "images/listing_6_img_2.jpeg",
+            "images/listing_6_img_3.jpeg",
+            "images/listing_6_img_4.jpg",
+            "images/listing_6_img_5.jpeg"
+        ]
     },
     {
         id: 7,
@@ -171,7 +199,13 @@ window.listingsData = [
         availableFrom: "2026-05-31",
         source: "FurnishedFinder",
         url: "https://www.furnishedfinder.com/property/543881_1",
-        images: []
+        images: [
+            "images/listing_7_img_1.jpg",
+            "images/listing_7_img_2.jpg",
+            "images/listing_7_img_3.jpg",
+            "images/listing_7_img_4.jpg",
+            "images/listing_7_img_5.jpg"
+        ]
     },
     {
         id: 8,
@@ -195,7 +229,13 @@ window.listingsData = [
         availableFrom: "2026-03-01",
         source: "FurnishedFinder",
         url: "https://www.furnishedfinder.com/property/912653_1",
-        images: []
+        images: [
+            "images/listing_8_img_1.jpg",
+            "images/listing_8_img_2.jpg",
+            "images/listing_8_img_3.jpg",
+            "images/listing_8_img_4.jpg",
+            "images/listing_8_img_5.jpg"
+        ]
     },
     {
         id: 9,
@@ -219,7 +259,12 @@ window.listingsData = [
         availableFrom: "2026-04-19",
         source: "FurnishedFinder",
         url: "https://www.furnishedfinder.com/property/337012_1",
-        images: []
+        images: [
+            "images/listing_9_img_1.jpeg",
+            "images/listing_9_img_2.jpeg",
+            "images/listing_9_img_3.jpeg",
+            "images/listing_9_img_4.jpeg"
+        ]
     },
     {
         id: 10,
