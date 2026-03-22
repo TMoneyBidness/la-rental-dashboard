@@ -13,25 +13,24 @@
     <header class="header">
         <div class="header-content">
             <h1>🏠 LA Furnished Rentals</h1>
-            <p class="subtitle">12 Curated Listings for Your Stay</p>
+            <p class="subtitle">Drag to rank • Click to expand • Add notes for outreach</p>
         </div>
     </header>
 
     <main class="container">
         <section class="filters">
             <div class="filter-group">
-                <label for="sort">Sort by:</label>
-                <select id="sort" onchange="sortListings()">
-                    <option value="price-asc">Price: Low to High</option>
-                    <option value="price-desc">Price: High to Low</option>
-                    <option value="beds-desc">Bedrooms: Most</option>
-                    <option value="beds-asc">Bedrooms: Least</option>
-                    <option value="sqft-desc">Sq Ft: Largest</option>
+                <label for="sort-select">Sort by:</label>
+                <select id="sort-select">
+                    <option value="rank">Your Ranking</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="bedrooms">Most Bedrooms</option>
                 </select>
             </div>
             <div class="filter-group">
-                <label for="bedrooms">Bedrooms:</label>
-                <select id="bedrooms" onchange="filterListings()">
+                <label for="bedrooms-filter">Bedrooms:</label>
+                <select id="bedrooms-filter">
                     <option value="all">All</option>
                     <option value="1">1 BR</option>
                     <option value="2">2 BR</option>
@@ -39,54 +38,51 @@
                 </select>
             </div>
             <div class="filter-group">
-                <label for="pets">Pets:</label>
-                <select id="pets" onchange="filterListings()">
+                <label for="pets-filter">Pets:</label>
+                <select id="pets-filter">
                     <option value="all">All</option>
                     <option value="yes">Pet Friendly</option>
-                    <option value="no">No Pets</option>
                 </select>
             </div>
             <div class="filter-group">
-                <label for="maxPrice">Max Price:</label>
-                <select id="maxPrice" onchange="filterListings()">
-                    <option value="10000">Any</option>
-                    <option value="3500">$3,500</option>
-                    <option value="3750">$3,750</option>
-                    <option value="4000">$4,000</option>
-                </select>
+                <label for="price-filter">Max Price:</label>
+                <input type="range" id="price-filter" min="3000" max="5000" value="5000" step="100">
+                <span id="price-value">$5,000</span>
             </div>
-            <button class="reset-btn" onclick="resetFilters()">Reset Filters</button>
+            <button id="reset-rankings" title="Reset to default order">🔄 Reset Rankings</button>
         </section>
 
         <section class="stats">
             <div class="stat">
-                <span class="stat-number" id="listingCount">12</span>
+                <span class="stat-number" id="total-listings">12</span>
                 <span class="stat-label">Listings</span>
             </div>
             <div class="stat">
-                <span class="stat-number">$3,450</span>
+                <span class="stat-number" id="min-price">$3,450</span>
                 <span class="stat-label">Min Price</span>
             </div>
             <div class="stat">
-                <span class="stat-number">$4,100</span>
+                <span class="stat-number" id="max-price">$4,200</span>
                 <span class="stat-label">Max Price</span>
             </div>
             <div class="stat">
-                <span class="stat-number">$3,763</span>
+                <span class="stat-number" id="avg-price">$3,788</span>
                 <span class="stat-label">Avg Price</span>
             </div>
         </section>
 
-        <section class="listings" id="listings">
+        <p class="drag-instructions">💡 <strong>Tip:</strong> Drag cards by the ⋮⋮ handle to reorder and rank your favorites. Rankings are saved automatically.</p>
+
+        <section class="listings" id="listings-container">
             <!-- Listings injected by JS -->
         </section>
     </main>
 
     <!-- Modal for expanded view -->
     <div class="modal" id="modal">
-        <div class="modal-content">
-            <button class="close-btn" onclick="closeModal()">&times;</button>
-            <div class="modal-body" id="modalBody">
+        <div class="modal-overlay" onclick="closeModal()"></div>
+        <div class="modal-dialog">
+            <div class="modal-body" id="modal-content">
                 <!-- Content injected by JS -->
             </div>
         </div>
@@ -94,9 +90,18 @@
 
     <footer class="footer">
         <p>Generated March 2026 • Data sourced from FurnishedFinder, SabbaticalHomes, Airbnb</p>
+        <p>Rankings and notes saved locally in your browser</p>
     </footer>
 
     <script src="data.js"></script>
     <script src="app.js"></script>
+    <script>
+        // Price filter display
+        const priceFilter = document.getElementById('price-filter');
+        const priceValue = document.getElementById('price-value');
+        priceFilter.addEventListener('input', () => {
+            priceValue.textContent = '$' + parseInt(priceFilter.value).toLocaleString();
+        });
+    </script>
 </body>
 </html>
