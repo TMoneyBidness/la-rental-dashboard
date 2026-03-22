@@ -381,5 +381,37 @@ window.listingsData = [
             "images/listing_12_img_4.jpeg",
             "images/listing_12_img_5.jpeg"
         ]
+    },
+    {
+        id: 13,
+        title: "Adorable 2 Bedroom Home in Glendale",
+        location: "Glendale, CA",
+        neighborhood: "Glendale (near The Americana)",
+        price: 3600,
+        bedrooms: 2,
+        bathrooms: 2,
+        beds: ["King", "Queen (Murphy bed)"],
+        sqft: 860,
+        laundry: "Shared on premises",
+        parking: "Free parking on premises",
+        petsAllowed: true,
+        petPolicy: "Pets allowed ($1,000 refundable pet deposit)",
+        utilitiesIncluded: true,
+        utilities: "Utilities included",
+        amenities: ["WiFi", "Air Conditioning", "Heating", "Full Kitchen", "Dishwasher", "Smart TV", "Washer/Dryer on Premises", "Dedicated Workspace", "Free Parking", "Backyard", "Hair Dryer"],
+        description: "Great 2 bedroom home with an open kitchen. 2 OLED big screen TVs. The 2nd bedroom has a queen sized murphy bed that folds up for more space as an office. Nice shared backyard with a hammock. Quiet, clean, and safe neighborhood in the heart of Glendale. Walking distance from the Americana, Galleria, parks, great restaurants and bars. Close to Atwater Village, Silver Lake, Los Feliz, Burbank.",
+        availability: "Available Now",
+        availableFrom: "2026-03-22",
+        source: "FurnishedFinder",
+        url: "https://www.furnishedfinder.com/property/896482_1",
+        lat: 34.1405,
+        lng: -118.2402,
+        images: [
+            "images/listing_13_img_1.jpeg",
+            "images/listing_13_img_2.jpeg",
+            "images/listing_13_img_3.jpg",
+            "images/listing_13_img_4.jpg",
+            "images/listing_13_img_5.jpg"
+        ]
     }
 ];

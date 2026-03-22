@@ -3,19 +3,23 @@
 let listings = [];
 let rankings = {};
 let notes = {};
+let hiddenListings = new Set();
 
 // Load saved rankings and notes from localStorage
 function loadSavedData() {
     const savedRankings = localStorage.getItem('la-rental-rankings');
     const savedNotes = localStorage.getItem('la-rental-notes');
+    const savedHidden = localStorage.getItem('la-rental-hidden');
     if (savedRankings) rankings = JSON.parse(savedRankings);
     if (savedNotes) notes = JSON.parse(savedNotes);
+    if (savedHidden) hiddenListings = new Set(JSON.parse(savedHidden));
 }
 
 // Save rankings and notes to localStorage
 function saveData() {
     localStorage.setItem('la-rental-rankings', JSON.stringify(rankings));
     localStorage.setItem('la-rental-notes', JSON.stringify(notes));
+    localStorage.setItem('la-rental-hidden', JSON.stringify([...hiddenListings]));
 }
 
 // Initialize the app
@@ -51,9 +55,10 @@ function renderListings(filteredListings = null) {
         const note = notes[listing.id] || '';
         
         return `
-        <div class="listing-card" draggable="true" data-id="${listing.id}" data-rank="${rank}">
+        <div class="listing-card${hiddenListings.has(listing.id) ? ' hidden-listing' : ''}" draggable="true" data-id="${listing.id}" data-rank="${rank}">
             <div class="rank-badge">#${rank}</div>
             <div class="drag-handle" title="Drag to reorder">⋮⋮</div>
+            <button class="delete-btn" data-id="${listing.id}" title="Hide this listing">✕ Hide</button>
             <div class="listing-image" style="background-image: url('${listing.images[0] || ''}'); background-size: cover; background-position: center;" data-listing-id="${listing.id}">
                 <span class="listing-price">$${listing.price.toLocaleString()}/mo</span>
                 ${listing.source ? `<span class="listing-source">${listing.source}</span>` : ''}
@@ -89,6 +94,7 @@ function renderListings(filteredListings = null) {
     setupNotes();
     setupExpandButtons();
     setupImageClicks();
+    setupDeleteButtons();
 }
 
 // Setup drag and drop
@@ -226,6 +232,31 @@ function setupImageClicks() {
     });
 }
 
+// Setup delete/hide buttons
+function setupDeleteButtons() {
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const id = parseInt(e.target.dataset.id);
+            hiddenListings.add(id);
+            saveData();
+            const card = e.target.closest('.listing-card');
+            card.classList.add('hidden-listing');
+            updateStats();
+            showToast('Listing hidden. Click "Show Hidden" to restore.');
+        });
+    });
+}
+
+// Unhide a listing
+function unhideListing(id) {
+    hiddenListings.delete(id);
+    saveData();
+    renderListings();
+    updateStats();
+    showToast('Listing restored!');
+}
+
 // Setup expand buttons
 function setupExpandButtons() {
     document.querySelectorAll('.expand-btn').forEach(btn => {
@@ -314,6 +345,15 @@ function setupFilters() {
     document.getElementById('pets-filter')?.addEventListener('change', applyFilters);
     document.getElementById('price-filter')?.addEventListener('input', applyFilters);
     
+    // Show hidden listings button
+    document.getElementById('show-hidden')?.addEventListener('click', () => {
+        hiddenListings.clear();
+        saveData();
+        renderListings();
+        updateStats();
+        showToast('All listings restored!');
+    });
+
     // Add reset rankings button handler
     document.getElementById('reset-rankings')?.addEventListener('click', () => {
         if (confirm('Reset all rankings to default order?')) {
@@ -360,18 +400,28 @@ function applyFilters() {
     renderListings(filtered);
 }
 
-// Update stats
+// Update stats (only visible listings)
 function updateStats() {
-    const prices = listings.map(l => l.price);
+    const visible = listings.filter(l => !hiddenListings.has(l.id));
+    const prices = visible.map(l => l.price);
     const totalEl = document.getElementById('total-listings');
     const minEl = document.getElementById('min-price');
     const maxEl = document.getElementById('max-price');
     const avgEl = document.getElementById('avg-price');
-    
-    if (totalEl) totalEl.textContent = listings.length;
-    if (minEl) minEl.textContent = '$' + Math.min(...prices).toLocaleString();
-    if (maxEl) maxEl.textContent = '$' + Math.max(...prices).toLocaleString();
-    if (avgEl) avgEl.textContent = '$' + Math.round(prices.reduce((a,b) => a+b, 0) / prices.length).toLocaleString();
+
+    if (totalEl) totalEl.textContent = visible.length;
+    if (prices.length) {
+        if (minEl) minEl.textContent = '$' + Math.min(...prices).toLocaleString();
+        if (maxEl) maxEl.textContent = '$' + Math.max(...prices).toLocaleString();
+        if (avgEl) avgEl.textContent = '$' + Math.round(prices.reduce((a,b) => a+b, 0) / prices.length).toLocaleString();
+    }
+
+    // Show/hide the "Show Hidden" button
+    const showHiddenBtn = document.getElementById('show-hidden');
+    if (showHiddenBtn) {
+        showHiddenBtn.style.display = hiddenListings.size > 0 ? 'inline-block' : 'none';
+        showHiddenBtn.textContent = `👁 Show Hidden (${hiddenListings.size})`;
+    }
 }
 
 // Close modal on escape
