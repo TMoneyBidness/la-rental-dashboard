@@ -95,6 +95,14 @@
         </div>
     </div>
 
+    <section class="draft-section">
+        <div class="draft-header">
+            <h2>📝 Draft Message</h2>
+            <button id="save-draft-btn">💾 Save</button>
+        </div>
+        <textarea id="draft-message" placeholder="Draft your outreach message here..."></textarea>
+    </section>
+
     <footer class="footer">
         <p>Generated March 2026 • Data sourced from FurnishedFinder, SabbaticalHomes, Airbnb</p>
         <p>Rankings and notes saved locally in your browser</p>
@@ -109,6 +117,22 @@
         const priceValue = document.getElementById('price-value');
         priceFilter.addEventListener('input', () => {
             priceValue.textContent = '$' + parseInt(priceFilter.value).toLocaleString();
+        });
+
+        // Draft message - load and save
+        const draftArea = document.getElementById('draft-message');
+        const saveDraftBtn = document.getElementById('save-draft-btn');
+        const savedDraft = localStorage.getItem('la-rental-draft');
+        if (savedDraft) draftArea.value = savedDraft;
+
+        saveDraftBtn.addEventListener('click', () => {
+            localStorage.setItem('la-rental-draft', draftArea.value);
+            saveDraftBtn.textContent = '✓ Saved!';
+            saveDraftBtn.classList.add('saved');
+            setTimeout(() => {
+                saveDraftBtn.textContent = '💾 Save';
+                saveDraftBtn.classList.remove('saved');
+            }, 2000);
         });
     </script>
 </body>
