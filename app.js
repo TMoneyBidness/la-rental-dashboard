@@ -250,7 +250,10 @@ function showModal(listing) {
                      title="Click to enlarge">
             `).join('')}
         </div>
-        <h2>${listing.title}</h2>
+        <div class="modal-title-row">
+            <h2>${listing.title}</h2>
+            <a href="${listing.url}" target="_blank" class="modal-title-link">View Original Listing &#8599;</a>
+        </div>
         <p class="modal-price">$${listing.price.toLocaleString()}/month</p>
         <p class="modal-location">📍 ${listing.neighborhood}</p>
         <div class="modal-details">

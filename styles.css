@@ -421,6 +421,39 @@ body {
     background: var(--primary-dark);
 }
 
+/* Modal Title Row */
+.modal-title-row {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.25rem;
+}
+
+.modal-title-row h2 {
+    margin: 0;
+    flex: 1;
+    min-width: 0;
+}
+
+.modal-title-link {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    background: var(--primary);
+    color: var(--white);
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+
+.modal-title-link:hover {
+    background: var(--primary-dark);
+}
+
 /* Modal Price and Location */
 .modal-price {
     font-size: 2rem;
