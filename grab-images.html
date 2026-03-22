@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FF Image Grabber - LA Rental Dashboard</title>
+    <style>
+        body { font-family: 'Inter', sans-serif; max-width: 900px; margin: 40px auto; padding: 20px; background: #f0f9ff; }
+        h1 { color: #1e293b; }
+        .step { background: white; padding: 20px; border-radius: 12px; margin: 20px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .step h2 { color: #2563eb; margin-top: 0; }
+        code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+        pre { background: #1e293b; color: #e2e8f0; padding: 16px; border-radius: 8px; overflow-x: auto; font-size: 13px; line-height: 1.5; }
+        .listing-link { display: block; margin: 8px 0; padding: 10px 16px; background: #eff6ff; border-radius: 8px; color: #2563eb; text-decoration: none; border: 1px solid #bfdbfe; }
+        .listing-link:hover { background: #dbeafe; }
+        .status { margin: 8px 0; padding: 8px; border-radius: 4px; }
+        .done { background: #dcfce7; color: #166534; }
+        .pending { background: #fef3c7; color: #92400e; }
+        textarea { width: 100%; height: 200px; font-family: monospace; font-size: 12px; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; }
+        button { background: #2563eb; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; margin: 4px; }
+        button:hover { background: #1d4ed8; }
+        .download-btn { background: #10b981; }
+        .download-btn:hover { background: #059669; }
+    </style>
+</head>
+<body>
+    <h1>FF Image Grabber</h1>
+    <p>For each FurnishedFinder listing below, open it in a new tab, paste the script in the browser console, and it will copy image URLs to your clipboard.</p>
+
+    <div class="step">
+        <h2>Step 1: Open each listing</h2>
+        <p>Click each link below to open it. For each one, open DevTools (Cmd+Option+J) and paste the script from Step 2.</p>
+        <a class="listing-link" href="https://www.furnishedfinder.com/property/906052_1" target="_blank">Listing 2: 1925 Spanish Cottage (Highland Park)</a>
+        <a class="listing-link" href="https://www.furnishedfinder.com/property/939383_1" target="_blank">Listing 3: Hollywood Hills</a>
+        <a class="listing-link" href="https://www.furnishedfinder.com/property/906446_1" target="_blank">Listing 4: Quiet Cottage (Eagle Rock)</a>
+        <a class="listing-link" href="https://www.furnishedfinder.com/property/792221_1" target="_blank">Listing 5: ModernHome (Glendale)</a>
+        <a class="listing-link" href="https://www.furnishedfinder.com/property/266234_1" target="_blank">Listing 6: Wisteria Pergola (Mid-City)</a>
+        <a class="listing-link" href="https://www.furnishedfinder.com/property/543881_1" target="_blank">Listing 7: Jade Place (West LA)</a>
+        <a class="listing-link" href="https://www.furnishedfinder.com/property/912653_1" target="_blank">Listing 8: 502 Rosemary Lane (Burbank)</a>
+        <a class="listing-link" href="https://www.furnishedfinder.com/property/337012_1" target="_blank">Listing 9: NoHo Bungalow</a>
+    </div>
+
+    <div class="step">
+        <h2>Step 2: Paste this in the browser console (Cmd+Option+J)</h2>
+        <pre id="script-code">(() => {
+  const id = location.pathname.match(/\/property\/(\d+)/)?.[1];
+  const imgs = [...document.querySelectorAll('img')]
+    .map(i => i.src || i.dataset.src)
+    .filter(s => s && s.includes('_pdp_/' + id))
+    .slice(0, 5);
+  const result = JSON.stringify(imgs);
+  navigator.clipboard.writeText(result);
+  console.log('Copied ' + imgs.length + ' image URLs!');
+  alert('Copied ' + imgs.length + ' image URLs to clipboard!\\n\\nPaste them in the textarea on the grabber page.');
+})();</pre>
+        <button onclick="navigator.clipboard.writeText(document.getElementById('script-code').textContent)">Copy Script</button>
+    </div>
+
+    <div class="step">
+        <h2>Step 3: Paste results here</h2>
+        <p>After running the script on each page, paste the clipboard contents here (one listing per paste). Click "Add" after each paste.</p>
+        <p><strong>Current listing:</strong> <select id="listing-select">
+            <option value="2">Listing 2</option>
+            <option value="3">Listing 3</option>
+            <option value="4">Listing 4</option>
+            <option value="5">Listing 5</option>
+            <option value="6">Listing 6</option>
+            <option value="7">Listing 7</option>
+            <option value="8">Listing 8</option>
+            <option value="9">Listing 9</option>
+        </select></p>
+        <textarea id="urls-input" placeholder='Paste the copied JSON array here, e.g. ["https://...","https://..."]'></textarea>
+        <br>
+        <button onclick="addUrls()">Add URLs for this listing</button>
+        <button class="download-btn" onclick="generateDownloadScript()">Generate Download Script</button>
+    </div>
+
+    <div class="step" id="results-section" style="display:none;">
+        <h2>Step 4: Run this download command in Terminal</h2>
+        <pre id="download-script"></pre>
+        <button onclick="navigator.clipboard.writeText(document.getElementById('download-script').textContent)">Copy Download Script</button>
+    </div>
+
+    <div class="step">
+        <h2>Collected URLs</h2>
+        <div id="collected"></div>
+    </div>
+
+    <script>
+        const collected = {};
+
+        function addUrls() {
+            const listingId = document.getElementById('listing-select').value;
+            const input = document.getElementById('urls-input').value.trim();
+            try {
+                const urls = JSON.parse(input);
+                if (Array.isArray(urls) && urls.length > 0) {
+                    collected[listingId] = urls.slice(0, 5);
+                    updateCollected();
+                    document.getElementById('urls-input').value = '';
+                    // Auto-advance to next listing
+                    const select = document.getElementById('listing-select');
+                    const nextIdx = select.selectedIndex + 1;
+                    if (nextIdx < select.options.length) {
+                        select.selectedIndex = nextIdx;
+                    }
+                    alert(`Added ${urls.length} images for Listing ${listingId}!`);
+                }
+            } catch(e) {
+                alert('Invalid JSON. Make sure you pasted the clipboard contents from the console script.');
+            }
+        }
+
+        function updateCollected() {
+            const div = document.getElementById('collected');
+            div.innerHTML = Object.entries(collected).map(([id, urls]) =>
+                `<div class="status done">Listing ${id}: ${urls.length} images</div>`
+            ).join('') || '<div class="status pending">No images collected yet</div>';
+        }
+
+        function generateDownloadScript() {
+            if (Object.keys(collected).length === 0) {
+                alert('No URLs collected yet!');
+                return;
+            }
+
+            const dir = '/Users/taylorerwin/Desktop/la-rental-dashboard/images';
+            let script = `cd "${dir}"\n\n`;
+
+            for (const [id, urls] of Object.entries(collected)) {
+                urls.forEach((url, i) => {
+                    const ext = url.match(/\.(jpe?g|png|webp|JPE?G)/)?.[0]?.toLowerCase() || '.jpg';
+                    script += `curl -s -o "listing_${id}_img_${i+1}${ext}" "${url}"\n`;
+                });
+                script += '\n';
+            }
+
+            script += 'echo "Done! Downloaded images for listings: ' + Object.keys(collected).join(', ') + '"';
+
+            document.getElementById('download-script').textContent = script;
+            document.getElementById('results-section').style.display = 'block';
+        }
+
+        updateCollected();
+    </script>
+</body>
+</html>

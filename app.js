@@ -54,8 +54,9 @@ function renderListings(filteredListings = null) {
         <div class="listing-card" draggable="true" data-id="${listing.id}" data-rank="${rank}">
             <div class="rank-badge">#${rank}</div>
             <div class="drag-handle" title="Drag to reorder">⋮⋮</div>
-            <div class="listing-image" style="background-image: url('${listing.images[0]}')">
+            <div class="listing-image" style="background-image: url('${listing.images[0] || ''}'); background-size: cover; background-position: center;">
                 <span class="listing-price">$${listing.price.toLocaleString()}/mo</span>
+                ${listing.source ? `<span class="listing-source">${listing.source}</span>` : ''}
             </div>
             <div class="listing-content">
                 <h3 class="listing-title">${listing.title}</h3>
@@ -241,8 +242,8 @@ function showModal(listing) {
             <div class="detail-item"><strong>🛏 Bedrooms:</strong> ${listing.bedrooms}</div>
             <div class="detail-item"><strong>🚿 Bathrooms:</strong> ${listing.bathrooms}</div>
             ${listing.sqft ? `<div class="detail-item"><strong>📐 Sqft:</strong> ${listing.sqft}</div>` : ''}
-            <div class="detail-item"><strong>🐕 Pets:</strong> ${listing.petsAllowed ? 'Allowed' : 'Not allowed'}</div>
-            <div class="detail-item"><strong>⚡ Utilities:</strong> ${listing.utilitiesIncluded ? 'Included' : 'Not included'}</div>
+            <div class="detail-item"><strong>🐕 Pets:</strong> ${listing.petPolicy || (listing.petsAllowed ? 'Allowed' : 'Not allowed')}</div>
+            <div class="detail-item"><strong>⚡ Utilities:</strong> ${listing.utilities || (listing.utilitiesIncluded ? 'Included' : 'Not included')}</div>
             <div class="detail-item"><strong>🚗 Parking:</strong> ${listing.parking || 'Not specified'}</div>
             <div class="detail-item"><strong>🧺 Laundry:</strong> ${listing.laundry || 'Not specified'}</div>
             <div class="detail-item"><strong>📅 Available:</strong> ${listing.availability}</div>
