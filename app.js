@@ -56,7 +56,7 @@ function renderListings(filteredListings = null) {
         
         return `
         <div class="listing-card${hiddenListings.has(listing.id) ? ' hidden-listing' : ''}" draggable="true" data-id="${listing.id}" data-rank="${rank}">
-            <div class="rank-badge">#${rank}</div>
+            <div class="rank-badge"><span class="rank-hash">#</span><input type="number" class="rank-input" data-id="${listing.id}" value="${rank}" min="1" title="Type a number to reorder"></div>
             <div class="drag-handle" title="Drag to reorder">⋮⋮</div>
             <button class="delete-btn" data-id="${listing.id}" title="Hide this listing">✕ Hide</button>
             <div class="listing-image" style="background-image: url('${listing.images[0] || ''}'); background-size: cover; background-position: center;" data-listing-id="${listing.id}">
@@ -91,6 +91,7 @@ function renderListings(filteredListings = null) {
     }).join('');
     
     setupDragAndDrop();
+    setupRankInputs();
     setupNotes();
     setupExpandButtons();
     setupImageClicks();
@@ -153,6 +154,55 @@ function setupDragAndDrop() {
     });
 }
 
+// Setup editable rank inputs
+function setupRankInputs() {
+    document.querySelectorAll('.rank-input').forEach(input => {
+        // Stop drag when interacting with input
+        input.addEventListener('mousedown', e => e.stopPropagation());
+        input.addEventListener('dragstart', e => e.preventDefault());
+
+        // Select all text on focus
+        input.addEventListener('focus', () => input.select());
+
+        // Handle Enter key
+        input.addEventListener('keydown', e => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                input.blur();
+            }
+        });
+
+        // Reorder on blur
+        input.addEventListener('blur', () => {
+            const id = parseInt(input.dataset.id);
+            const container = document.getElementById('listings-container');
+            const cards = [...container.querySelectorAll('.listing-card')];
+            const totalCards = cards.length;
+
+            let newPos = parseInt(input.value);
+            if (isNaN(newPos) || newPos < 1) newPos = 1;
+            if (newPos > totalCards) newPos = totalCards;
+
+            const card = input.closest('.listing-card');
+            const currentIdx = cards.indexOf(card);
+            const targetIdx = newPos - 1;
+
+            if (currentIdx === targetIdx) return;
+
+            // Move the card in the DOM
+            card.remove();
+            const updatedCards = [...container.querySelectorAll('.listing-card')];
+            if (targetIdx >= updatedCards.length) {
+                container.appendChild(card);
+            } else {
+                container.insertBefore(card, updatedCards[targetIdx]);
+            }
+
+            updateRankings();
+        });
+    });
+}
+
 // Update rankings after drag
 function updateRankings() {
     const cards = document.querySelectorAll('.listing-card');
@@ -162,7 +212,8 @@ function updateRankings() {
         rankings[id] = newRank;
         
         const badge = card.querySelector('.rank-badge');
-        badge.textContent = '#' + newRank;
+        const input = badge.querySelector('.rank-input');
+        if (input) input.value = newRank;
         badge.classList.add('rank-updated');
         setTimeout(() => badge.classList.remove('rank-updated'), 500);
     });
